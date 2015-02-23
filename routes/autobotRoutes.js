@@ -1,13 +1,13 @@
 'use strict';
 var Autobot = require('../models/Autobot'),
-    eat_auth = require('../lib/eat_auth'),
+    eat_auth = require('../lib/eatAuth'),
     bodyparser = require('body-parser');
 
 module.exports = function(app, appSecret) {
   app.use(bodyparser.json());
 
   app.get('/autobots', eat_auth(appSecret), function (req, res) {
-    Autobot.find({user_id: req.user._id}, function (err, data) {
+    Autobot.find({}, function (err, data) {
       if (err) return res.status(500).send({'msg': 'could not retrieve autobot'});
       res.json(data);
     });
