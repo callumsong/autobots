@@ -34,7 +34,7 @@ module.exports = function(app, appSecret) {
   app.delete('/autobots/:id', eat_auth(appSecret), function (req, res) {
     Autobot.remove({_id: req.params.id}, function (err) {
       if (err) return res.status(500).send({'msg': 'could not delete'});
-      res.json(req.body);
+      res.json({'msg': 'deleted files'});
       });
   });
 };
