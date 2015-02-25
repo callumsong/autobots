@@ -11,20 +11,27 @@ var mongoose = require ('mongoose'),
 chai.use(chaihttp);
 
 describe('transformers api end points', function() {
-  var id;
+  var id,
+      token;
   beforeEach(function(done) {
     chai.request('localhost:3000/api/v1')
-      .post('/autobots')
-      .send({autobotName: 'Test Bot'})
+      .get('/sign_in')
+      .auth('bumblebee@example.com', 'transform')
       .end(function (err, res) {
-        id = res.body._id;
-        done();
+        token = res.body.eat;
+        chai.request('localhost:3000/api/v1')
+          .post('/autobots')
+          .send({eat: token, autobotName: 'Le Test'})
+          .end(function (err, res) {
+            id = res.body._id;
+            done();
+          });
       });
   });
   it('should respond to a post request', function (done) {
     chai.request('localhost:3000/api/v1')
       .post('/autobots')
-      .send({autobotName: 'Le Test Bot'})
+      .send({eat: token, autobotName: 'Le Test Bot'})
       .end(function (err, res) {
         expect(err).eql(null);
         expect(res.body.autobotName).eql('Le Test Bot');
@@ -35,7 +42,7 @@ describe('transformers api end points', function() {
   it('should be able to update an autobot', function (done) {
     chai.request('localhost:3000/api/v1')
       .put('/autobots/' + id)
-      .send({autobotName: 'Le New Test'})
+      .send({eat: token, autobotName: 'Le New Test'})
       .end(function (err, res) {
         expect(err).eql(null);
         expect(res.body.autobotName).eql('Le New Test');
@@ -45,18 +52,20 @@ describe('transformers api end points', function() {
   it('should have an index', function (done) {
     chai.request('localhost:3000/api/v1')
       .get('/autobots')
+      .send({eat: token})
       .end(function (err, res) {
         expect(err).eql(null);
-        expect(res.body[0]).to.have.property('autobotName');
+        expect(res.body[0]).to.have.property('Name');
         done();
       });
   });
   it('should be deleting an autobot', function (done) {
     chai.request('localhost:3000/api/v1')
       .delete('/autobots/' + id)
+      .send({eat: token})
       .end(function (err, res) {
         expect(err).eql(null);
-        expect(res.body).eql({});
+        expect(res.body).eql({'msg': 'deleted files'});
         done();
       });
   });

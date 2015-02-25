@@ -1,16 +1,23 @@
 'use strict';
-var express = require('express');
-var mongoose = require('mongoose');
-var autobotRoutes = require('./routes/autobotRoutes');
+var express = require('express'),
+    mongoose = require('mongoose'),
+    passport = require('passport');
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/transformers_dev');
 
 var app = express();
-var router = express.Router();
+app.set('appSecret', process.env.SECRET || 'robotsindisguise');
+app.use(passport.initialize());
+require('./lib/passportStrat')(passport);
 
-autobotRoutes(router);
+var autobotsRouter = express.Router(),
+    userRouter = express.Router();
 
-app.use('/api/v1', router);
+require('./routes/autobotRoutes')(autobotsRouter, app.get('appSecret'));
+require('./routes/userRoutes')(userRouter, passport, app.get('appSecret'));
+
+app.use('/api/v1', autobotsRouter);
+app.use('/api/v1', userRouter);
 
 app.listen(process.env.PORT || 3000, function() {
   console.log('online on ' + (process.env.PORT || 3000));
