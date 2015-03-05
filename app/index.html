@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html class="no-js"> 
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Optimus says Hello</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body data-ng-app="autobots">
+    <main data-ng-controller="transformController" data-ng-init="unite()">
+      <h1>Autobots Transform!</h1>
+      <form data-ng-submit="transform()">
+        <input type="file" data-ng-file-select="onFileSelect($files)">
+        <button button type="submit">Upload Autobot Pic</button>
+      </form>
+      <ul data-ng-repeat="autobot in autobots">{{autobot.autobotPic}}</ul>
+    </main>
+    <script src="bundle.js"></script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 'use strict';
 
 process.env.MONGO_URI = 'mongodb://localhost/autobot_test';
-require('../server.js');
+require('../../server.js');
 
 var mongoose = require ('mongoose'),
     chai = require ('chai'),

@@ -3,7 +3,7 @@
 var mongoose = require('mongoose');
 
 var autobotSchema = new mongoose.Schema ({
-  autobotName: String
+  autobotPic: String
 });
 
 module.exports = mongoose.model('Autobot', autobotSchema);

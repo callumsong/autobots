@@ -6,6 +6,7 @@ var autobotRoutes = require('./routes/autobotRoutes');
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/transformers_dev');
 
 var app = express();
+app.use(express.static(__dirname + '/build'));
 var router = express.Router();
 
 autobotRoutes(router);
