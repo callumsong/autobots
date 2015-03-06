@@ -12,7 +12,7 @@
       <h1>Autobots Transform!</h1>
       <form data-ng-submit="transform()">
         <input type="file" data-ng-file-select="onFileSelect($files)">
-        <button button type="submit">Upload Autobot Pic</button>
+        <button button type="submit" data-ng-click="transform()">Upload Autobot Pic</button>
       </form>
       <ul data-ng-repeat="autobot in autobots">{{autobot.autobotPic}}</ul>
     </main>

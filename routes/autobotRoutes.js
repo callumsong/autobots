@@ -20,7 +20,7 @@ module.exports = function(app) {
 
   app.post('/autobots', function(req, res) {
     var newAutobot = new Autobot(),
-        file = req.files.file;
+        file = req.file;
     fs.writeFileSync('./build/pictures/' + newAutobot._id + '.png', file);
     newAutobot.autobotPic = 'http://localhost:3000/pictures/' + newAutobot._id + '.png';
     newAutobot.save(function (err, bot) {

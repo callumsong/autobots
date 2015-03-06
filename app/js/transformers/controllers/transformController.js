@@ -28,11 +28,9 @@ module.exports = function(app) {
       $scope.upload = $upload.upload({
         method: 'POST',
         url: '/api/v1/autobots',
-        data: angular.toJson($scope.model),
         file : file
       })
-      .progress(function (evt) {
-        $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total, 10);
+      .progress(function () {
       })
       .success(function (data) {
         console.log('yuss');
