@@ -1,15 +1,8 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('transformController', ['$scope', '$upload', '$http', function($scope, $upload, $http) {
+  app.controller('transformController', ['$scope', '$http', function($scope, $http) {
     $scope.autobots = [];
-    $scope.model = {};
-    $scope.selectedFile = [];
-    $scope.uploadProgress = 0;
-    $scope.watch = function() {
-      $scope.transform($scope.files);
-    };
-
     $scope.unite = function() {
       $http({
         method: 'GET',
@@ -23,25 +16,55 @@ module.exports = function(app) {
       });
     };
 
-    $scope.transform = function () {
-      var file = $scope.selectedFile[0];
-      $scope.upload = $upload.upload({
+    $scope.create = function (autobot) {
+      $http({
         method: 'POST',
         url: '/api/v1/autobots',
-        file : file
-      })
-      .progress(function () {
+        data : autobot
       })
       .success(function (data) {
-        console.log('yuss');
+        $scope.autobots.push(data);
       })
       .error(function (data) {
         console.log(data);
       });
     };
-    $scope.onFileSelect = function($files) {
-      $scope.uploadProgress = 0;
-      $scope.selectedFile = $files;
+
+    $scope.transform = function(autobot) {
+      $http({
+        method: 'PUT',
+        url: '/api/v1/autobots/' + autobot._id,
+        data: autobot
+      })
+      .success(function() {
+        autobot.editing = false;
+      })
+      .error(function(data) {
+        console.log(data);
+      });
+    };
+
+    $scope.terminate = function(autobot) {
+      $http({
+        method: 'DELETE',
+        url: '/api/v1/autobots/' + autobot._id
+      })
+      .success(function() {
+        $scope.autobots.splice($scope.autobots.indexOf(autobot), 1);
+      })
+      .error(function(data) {
+        console.log(data);
+      });
+    };
+
+    $scope.editToggle = function(autobot) {
+      if(autobot.editing) {
+        autobot.autobotName = autobot.oldName;
+        autobot.editing = false;
+      } else {
+        autobot.oldName = autobot.autobotName;
+        autobot.editing = true;
+      }
     };
   }]);
 };

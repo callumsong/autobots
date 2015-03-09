@@ -1,15 +1,9 @@
 'use strict';
 var Autobot = require('../models/Autobot'),
-    bodyparser = require('body-parser'),
-    multipart = require('connect-multiparty'),
-    path = require('path'),
-    fs = require('fs');
+    bodyparser = require('body-parser');
 
 module.exports = function(app) {
   app.use(bodyparser.json());
-  app.use(multipart({
-    uploadDir: '../build'
-  }));
 
   app.get('/autobots', function (req, res) {
     Autobot.find({}, function (err, data) {
@@ -19,10 +13,7 @@ module.exports = function(app) {
   });
 
   app.post('/autobots', function(req, res) {
-    var newAutobot = new Autobot(),
-        file = req.file;
-    fs.writeFileSync('./build/pictures/' + newAutobot._id + '.png', file);
-    newAutobot.autobotPic = 'http://localhost:3000/pictures/' + newAutobot._id + '.png';
+    var newAutobot = new Autobot(req.body);
     newAutobot.save(function (err, bot) {
       if (err) return res.status(500).send({'msg': 'could not save autobot'});
 

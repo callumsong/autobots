@@ -1,6 +1,6 @@
 'use strict';
 
-process.env.MONGO_URI = 'mongodb://localhost/autobot_test';
+process.env.MONGO_URI = 'mongodb://localhost/transform_test';
 require('../../server.js');
 
 var mongoose = require ('mongoose'),

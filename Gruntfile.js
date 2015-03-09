@@ -7,6 +7,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.initConfig({
     clean: {
@@ -48,10 +49,16 @@ module.exports = function(grunt) {
         dest: 'test/client_side/test_bundle.js'
       },
 
+      karmatest: {
+        src:['test/karma_tests/*Test.js'],
+        dest: 'test/karma_tests/karmaTestBundle.js'
+      },
+
       options: {
         transform: ['debowerify']
       }
     },
+
     jshint: {
       dev: {
         options: {
@@ -60,9 +67,16 @@ module.exports = function(grunt) {
         src: ['app/js/*', 'test/*.js', 'routes/*', 'models/*']
       }
     },
+
     simplemocha: {
       all: {
         src: ['test/**/*.js']
+      }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
       }
     }
   });
@@ -70,4 +84,5 @@ module.exports = function(grunt) {
   grunt.registerTask('build:test', ['browserify:test']);
   grunt.registerTask('building', ['watch:build']);
   grunt.registerTask('testing', ['watch:test']);
+  grunt.registerTask('goodkarma', ['browserify:karmatest', 'karma:unit']);
 };

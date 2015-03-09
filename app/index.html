@@ -4,17 +4,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Optimus says Hello</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body data-ng-app="autobots">
     <main data-ng-controller="transformController" data-ng-init="unite()">
-      <h1>Autobots Transform!</h1>
-      <form data-ng-submit="transform()">
-        <input type="file" data-ng-file-select="onFileSelect($files)">
-        <button button type="submit" data-ng-click="transform()">Upload Autobot Pic</button>
+      <h1>Autobots Transform</h1>
+      <form name="newAutobotCode">
+        <label for="newAutobotName">New Autobot</label>
+        <input type="text" id="newAutobotCode"data-ng-model="newAutobot.autobotName">
+        <button type="submit" data-ng-click="create(newAutobot)">Save New Autobot</button>
       </form>
-      <ul data-ng-repeat="autobot in autobots">{{autobot.autobotPic}}</ul>
+      <ul data-ng-repeat="autobot in autobots">
+        <li>
+          {{autobot.autobotName}}
+          <form data-ng-if="autobot.editing">
+            <label for "autobot{{autobot._id}}">Edit Autobot</label>
+            <input type="text" id="autobot{{autobot._id}}" data-ng-model="autobot.autobotName">
+            <button type="submit" data-ng-click ="transform(autobot)">Transform!</button>
+            <button type"button" data-ng-click="editToggle(autobot)">Cancel</button>
+          </form>
+          <button data-ng-click="editToggle(autobot)" data-ng-if="!autobot.editing">Edit Autobot</button>
+          <button data-ng-click="terminate(autobot)">Terminate Autobot</button>
+        </li>
+      </ul>
     </main>
     <script src="bundle.js"></script>
   </body>
