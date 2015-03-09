@@ -1,6 +1,6 @@
 'use strict';
-var Autobot = require('../models/Autobot');
-var bodyparser = require('body-parser');
+var Autobot = require('../models/Autobot'),
+    bodyparser = require('body-parser');
 
 module.exports = function(app) {
   app.use(bodyparser.json());
