@@ -2,5 +2,4 @@
 .DS_Store
 db/
 **/bower_components/*
-**/build/
 **/test_bundle.js
