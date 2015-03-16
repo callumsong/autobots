@@ -39,7 +39,7 @@ botDispatcher.register(function(payload) {
       _bots.push(data);
       request
         .post('/api/v1/autobots')
-        .send({autobotName: data})
+        .send(data)
         .end(function(err, res) {
           if (err) return console.log(err);
           return res.body;
@@ -56,7 +56,7 @@ botDispatcher.register(function(payload) {
         .delete('/api/v1/autobots/' + data._id)
         .end(function(err, res) {
           if(err) return console.log(err);
-          return res.body;
+          return;
         });
     },
 
@@ -71,6 +71,9 @@ botDispatcher.register(function(payload) {
         });
     }
   };
+
+  if (!handlers[actionType]) return true;
+  handlers[actionType]();
   BotStore.emitChange();
 
   return true;

@@ -55,7 +55,7 @@ module.exports = function(grunt) {
       },
 
       options: {
-        transform: ['debowerify']
+        transform: ['reactify', 'debowerify']
       }
     },
 
