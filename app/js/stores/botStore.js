@@ -1,19 +1,20 @@
 var botDispatcher = require('../dispatcher/botDispatcher'),
     EventEmitter = require('events').EventEmitter,
-    botConstants = require('../constants/botConstants'),
     request = require('superagent'),
     _ = require('underscore');
 
 var _bots = [];
 
-function loadBotData (data) {
-  _bots = data;
-}
-
 var BotStore = _.extend({}, EventEmitter.prototype, {
 
   getBots: function() {
-    return _bots;
+    request
+        .get('/api/v1/autobots')
+        .end(function(err, res) {
+          if (err) return console.log(err);
+          _bots = res.body;
+          return _bots;
+        });
   },
 
   addChangeListener: function(callback) {
@@ -36,6 +37,7 @@ botDispatcher.register(function(payload) {
 
   var handlers = {
     ADD_BOT: function() {
+      console.log('adding');
       _bots.push(data);
       request
         .post('/api/v1/autobots')
@@ -47,6 +49,7 @@ botDispatcher.register(function(payload) {
     },
 
     DELETE_BOT: function() {
+      console.log('deleting');
       var index = -1;
       _bots.forEach(function(p, i) {
         if (p._id === data._id) index = i;
@@ -58,18 +61,18 @@ botDispatcher.register(function(payload) {
           if(err) return console.log(err);
           return;
         });
-    },
-
-    SHOW_BOT: function() {
-      request
-        .get('/api/v1/autobots')
-        .end(function(err, res) {
-          if (err) return console.log(err);
-          data = res.body;
-          loadBotData(data);
-          getBots();
-        });
     }
+
+    // SHOW_BOT: function() {
+    //   console.log('showing');
+    //   request
+    //     .get('/api/v1/autobots')
+    //     .end(function(err, res) {
+    //       if (err) return console.log(err);
+    //       data = res.body;
+    //       getBots();
+    //     });
+    // }
   };
 
   if (!handlers[actionType]) return true;

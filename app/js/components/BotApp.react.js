@@ -1,14 +1,10 @@
 var React = require('react');
 var BotStore = require('../stores/botStore');
 var FluxBot = require('./FluxBot.react');
-function getBotState() {
-  return {
-    bots: BotStore.getBots()
-  };
-}
+
 var FluxBotApp = React.createClass({
   getInitialState: function() {
-    return getBotState();
+    return {newBot: {autobotName:''}};
   },
   componentDidMount: function() {
     BotStore.addChangeListener(this._onChange);
@@ -19,7 +15,7 @@ var FluxBotApp = React.createClass({
   render: function() {
     return (
       <div className='autobots-app'>
-        <FluxBot data={this.state.bots}/>
+        <FluxBot data={this.state.data}/>
       </div>
       );
   },

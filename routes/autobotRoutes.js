@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   app.post('/autobots', function(req, res) {
     var newAutobot = new Autobot(req.body);
+    console.log(req.body);
     newAutobot.save(function (err, bot) {
       if (err) return res.status(500).send({'msg': 'could not save autobot'});
 
