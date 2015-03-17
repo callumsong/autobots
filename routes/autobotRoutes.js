@@ -1,6 +1,6 @@
 'use strict';
-var Autobot = require('../models/Autobot');
-var bodyparser = require('body-parser');
+var Autobot = require('../models/Autobot'),
+    bodyparser = require('body-parser');
 
 module.exports = function(app) {
   app.use(bodyparser.json());
@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   app.post('/autobots', function(req, res) {
     var newAutobot = new Autobot(req.body);
+    console.log(req.body);
     newAutobot.save(function (err, bot) {
       if (err) return res.status(500).send({'msg': 'could not save autobot'});
 
